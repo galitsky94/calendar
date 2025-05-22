@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Employee } from '../data/employees';
+import type React from 'react';
+import { useState, useEffect } from 'react';
+import type { Employee } from '../data/employees';
 
-// Function to get employee photo based on ID
 const getEmployeePhoto = (id: number): string => {
-  // We have specific faces from the user
   if (id === 1) return '/faces/face1.jpg';
   if (id === 2) return '/faces/face2.jpg';
-  if (id === 3) return '/faces/face3.jpg';
+  if (id === 3) return '/faces/face3.jpg?priority=high';
   if (id === 4) return '/faces/face4.jpg';
-
-  // For other days, show colored bubbles with question marks
   return '';
 };
 
@@ -28,92 +25,128 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
   colorClass,
   onClick
 }) => {
-  // State to control Wednesday animation
-  const [showWednesdayAnimation, setShowWednesdayAnimation] = useState(false);
-
-  // Is it Wednesday (day 4)?
+  const [wednesdayImageLoaded, setWednesdayImageLoaded] = useState(false);
   const isWednesday = day === 4;
 
-  // For days 1-3, always show faces regardless of revealed state
-  const showFace = day <= 3;
+  // States for Day 4 animation
+  const [showQuestion, setShowQuestion] = useState(isWednesday);
+  const [dissolveQuestion, setDissolveQuestion] = useState(false);
+  const [showFace, setShowFace] = useState(false);
 
-  // Pretend it's Wednesday and automatically show the animation after a delay
   useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-
     if (isWednesday) {
-      // Delay the animation to make it more noticeable
-      timer = setTimeout(() => {
-        setShowWednesdayAnimation(true);
-      }, 2000);
+      const img = new Image();
+      img.src = getEmployeePhoto(4);
+      img.onload = () => {
+        setWednesdayImageLoaded(true);
+      };
     }
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
   }, [isWednesday]);
 
-  // Handle click for Wednesday's special case
-  const handleClick = () => {
-    // For Wednesday, trigger the animation if not already shown
-    if (isWednesday && !showWednesdayAnimation) {
-      setShowWednesdayAnimation(true);
-    } else {
-      // For other days, just call the regular onClick handler
-      onClick();
+  useEffect(() => {
+    if (isWednesday && isRevealed && wednesdayImageLoaded) {
+      // Wait 2 seconds after image load, then start dissolving question mark
+      const timerDissolveStart = setTimeout(() => {
+        setDissolveQuestion(true);
+
+        // After question mark starts dissolving (1.5s animation), show face
+        const timerFaceRevealStart = setTimeout(() => {
+          setShowQuestion(false); // Hide question mark completely
+          setShowFace(true);      // Start revealing face
+        }, 1500); // Duration of dissolve-question-effect
+
+        return () => clearTimeout(timerFaceRevealStart);
+      }, 2000); // 2-second delay before animation starts
+
+      return () => clearTimeout(timerDissolveStart);
     }
-  };
+  }, [isWednesday, isRevealed, wednesdayImageLoaded]);
 
-  // Wednesday special animation content
-  const wednesdayContent = (
-    <div className="relative w-full h-full rounded-full overflow-hidden">
-      <span
-        className={`flex items-center justify-center absolute inset-0 text-2xl font-bold transition-all duration-1000 ease-in-out ${
-          showWednesdayAnimation ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-        }`}
-      >
-        ?
-      </span>
+  const showFaceForDays1to3 = day <= 3;
 
-      {showWednesdayAnimation && (
+  if (isWednesday) {
+    // Only apply animation if the day is revealed
+    if (!isRevealed) {
+      return (
         <div
-          className="absolute inset-0 animate-fadeIn bg-cover bg-center"
+          onClick={onClick}
+          className={`bubble ${colorClass} flex items-center justify-center cursor-pointer`}
+        >
+          <span className="text-2xl font-bold">?</span>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        onClick={onClick}
+        // Apply the new .day4-pulsate class
+        className={`bubble ${colorClass} flex items-center justify-center cursor-pointer relative overflow-hidden ${isRevealed && wednesdayImageLoaded ? 'day4-pulsate' : ''}`}
+      >
+        {showQuestion && (
+          <div
+            className={`absolute inset-0 flex items-center justify-center text-2xl font-bold ${dissolveQuestion ? 'question-dissolving' : ''}`}
+            style={{ opacity: dissolveQuestion ? 0 : 1 }} // Ensure final state after animation
+          >
+            ?
+          </div>
+        )}
+        {showFace && wednesdayImageLoaded && (
+          <div
+            className="face-appearing"
+            style={{ backgroundImage: `url(${getEmployeePhoto(4)})` }}
+          />
+        )}
+        {/* Fallback if somehow no image/question for revealed Wednesday - should not happen */}
+        {!showQuestion && !showFace && wednesdayImageLoaded && (
+            <div
+                className="w-full h-full bg-cover bg-center rounded-full"
+                style={{ backgroundImage: `url(${getEmployeePhoto(4)})` }}
+            />
+        )}
+        {!showQuestion && !showFace && !wednesdayImageLoaded && isRevealed && (
+            <span className="text-4xl font-bold">?</span> // Still show Q if revealed but image not loaded
+        )}
+      </div>
+    );
+  }
+
+  // Normal content for other days
+  const normalContent = showFaceForDays1to3 ? (
+    <div className="w-full h-full overflow-hidden rounded-full">
+      {day === 3 ? (
+        <div className="relative w-full h-full">
+          <div className="face3-loading absolute inset-0 rounded-full" />
+          <img
+            src={getEmployeePhoto(day)}
+            alt={`Employee face ${day}`}
+            className="w-full h-full object-cover rounded-full face3-optimized"
+            style={{ objectPosition: 'center 20%' }}
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
+        </div>
+      ) : (
+        <div
+          className="w-full h-full bg-cover bg-center rounded-full"
           style={{
-            backgroundImage: `url(${getEmployeePhoto(4)})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            animation: 'fadeIn 1s ease-in-out'
+            backgroundImage: `url(${getEmployeePhoto(day)})`,
+            backgroundPosition: 'center 20%'
           }}
         />
       )}
     </div>
-  );
-
-  // Normal content for other days
-  const normalContent = showFace ? (
-    // Days 1-3 show specific employee photos
-    <div className="w-full h-full overflow-hidden rounded-full">
-      <div
-        className="w-full h-full bg-cover bg-center rounded-full"
-        style={{
-          backgroundImage: `url(${getEmployeePhoto(day)})`,
-          backgroundPosition: 'center 20%'
-        }}
-      />
-    </div>
   ) : (
-    // Other days (5+) show a question mark in the colorful bubble
     <span className="text-2xl font-bold">?</span>
   );
 
   return (
     <div
-      onClick={handleClick}
-      className={`bubble ${colorClass} flex items-center justify-center cursor-pointer
-        ${isRevealed ? 'revealed' : ''}
-        ${isWednesday && showWednesdayAnimation ? 'wednesday-bubble' : ''}`}
+      onClick={onClick}
+      className={`bubble ${colorClass} flex items-center justify-center cursor-pointer ${isRevealed && !isWednesday ? 'revealed' : ''}`}
     >
-      {isWednesday ? wednesdayContent : normalContent}
+      {normalContent}
     </div>
   );
 };

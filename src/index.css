@@ -59,24 +59,31 @@ body {
   box-shadow: 0 0 0 4px rgba(30, 185, 128, 0.2);
 }
 
-/* Special animations for Wednesday */
-@keyframes dissolve-question {
-  0% { opacity: 1; transform: scale(1); }
-  40% { opacity: 0; transform: scale(1.1); }
-  60% { opacity: 0; transform: scale(0.9); }
-  100% { opacity: 0; transform: scale(0); }
+/* Новая анимация пульсации для 4-го дня */
+@keyframes subtle-red-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px 3px rgba(255, 130, 130, 0.25); /* Начальное состояние чуть заметнее */
+  }
+  50% {
+    transform: scale(1.08); /* Увеличенный масштаб */
+    box-shadow: 0 0 18px 6px rgba(255, 100, 100, 0.45); /* Более интенсивная и широкая тень */
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px 3px rgba(255, 130, 130, 0.25);
+  }
 }
 
-@keyframes reveal-face {
-  0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
-  60% { opacity: 0.7; transform: scale(1.05); filter: blur(5px); }
-  80% { opacity: 0.9; transform: scale(1.02); filter: blur(0); }
-  100% { opacity: 1; transform: scale(1); filter: blur(0); }
+.day4-pulsate {
+  animation: subtle-red-pulse 2s infinite ease-in-out;
+  position: relative; /* Для корректного отображения box-shadow и z-index если понадобится */
+  z-index: 2; /* Чтобы быть поверх других элементов, если необходимо */
 }
 
 @keyframes glow-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 205, 210, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 205, 210, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(255, 205, 210, 0.4); }
+  70% { box-shadow: 0 0 0 5px rgba(255, 205, 210, 0); }
   100% { box-shadow: 0 0 0 0 rgba(255, 205, 210, 0); }
 }
 
@@ -90,26 +97,46 @@ body {
   animation: fadeIn 1s ease-in-out forwards;
 }
 
-.wednesday-question {
-  animation: dissolve-question 2s forwards;
-}
-
-.wednesday-face {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  opacity: 0;
-  animation: reveal-face 2s forwards;
-  animation-delay: 0.8s;
-}
-
 .wednesday-bubble {
   position: relative;
   animation: glow-pulse 2s infinite;
   animation-delay: 2.5s;
+}
+
+/* New animations for Day 4 sequential reveal */
+@keyframes dissolve-question-effect {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes reveal-face-effect {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.question-dissolving {
+  animation: dissolve-question-effect 1.5s ease-in-out forwards;
+}
+
+.face-appearing {
+  animation: reveal-face-effect 1s ease-in-out forwards;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
 }
 
 .bubble-red {
@@ -176,4 +203,21 @@ body {
   width: 56px;
   height: 56px;
   font-size: 1.1rem;
+}
+
+/* Optimization for the third face image */
+.face3-optimized {
+  background-color: #f0f0f0; /* Light background while loading */
+  will-change: background-image; /* Hint to browser about upcoming change */
+}
+
+/* Add a small loading state indicator */
+@keyframes face3-loading {
+  0% { opacity: 0.8; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0.8; }
+}
+
+.face3-loading {
+  animation: face3-loading 1s ease-in-out infinite;
 }

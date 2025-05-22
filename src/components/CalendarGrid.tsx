@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import CalendarDay from './CalendarDay';
 import { useCalendar } from '../context/CalendarContext';
 import { employees } from '../data/employees';
@@ -41,8 +41,8 @@ const CalendarGrid: React.FC = () => {
       </h2>
       <div className="p-10 card mb-8 rounded-xl shadow bg-white max-w-3xl mx-auto">
         <div className="grid grid-cols-7 mb-8">
-          {daysOfWeek.map((day, index) => (
-            <div key={`grid-day-${day}-${index}`} className="text-center font-semibold text-gray-500 text-xl">
+          {daysOfWeek.map((day) => (
+            <div key={`grid-day-${day}`} className="text-center font-semibold text-gray-500 text-xl">
               {day}
             </div>
           ))}
