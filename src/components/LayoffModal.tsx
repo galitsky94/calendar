@@ -1,6 +1,15 @@
 import React from 'react';
 import { useCalendar } from '../context/CalendarContext';
 import { Employee } from '../data/employees';
+import CalendarDay from './CalendarDay';
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon
+} from 'react-share';
 
 const LayoffModal: React.FC = () => {
   const {
@@ -8,43 +17,89 @@ const LayoffModal: React.FC = () => {
     setOpenModal,
     currentEmployee,
     remainingDays,
+    revealedDays,
     bidOnPTO,
     signGoodbyeLetter
   } = useCalendar();
 
   if (!openModal || !currentEmployee) return null;
 
+  // Create share URL and message
+  const shareUrl = window.location.href;
+  const shareTitle = `Today, we say goodbye to ${currentEmployee.name} from the ${currentEmployee.department} department! #AdventLayoffCalendar`;
+  const shareDescription = `After ${currentEmployee.yearsOfService} years of service, ${currentEmployee.name} has been selected for the Advent Layoff Calendar. There are ${remainingDays} days left in the layoffs!`;
+
+  // Get avatar URL based on employee ID
+  const getAvatarUrl = () => {
+    if (currentEmployee.id <= 3) {
+      return `/faces/face${currentEmployee.id}.jpg`;
+    }
+    // For employees without specific photos, return a generic avatar or first face
+    return '/faces/face1.jpg';
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center modal-overlay z-50">
-      <div className="modal-content p-6 relative">
+      <div className="modal-content p-6 relative max-w-lg w-full">
         {/* Close button */}
         <button
           onClick={() => setOpenModal(false)}
-          className="absolute top-4 right-4 text-2xl text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute top-6 right-6 text-2xl text-gray-400 hover:text-gray-600 transition-colors"
+          aria-label="Close"
         >
           ✕
         </button>
 
         {/* Header */}
-        <h2 className="text-center text-[#1eb980] font-bold text-2xl pt-2 pb-2">
+        <h2 className="text-center text-[#1eb980] font-bold text-2xl pt-2 pb-6">
           ADVENT LAYOFF CALENDAR
         </h2>
 
-        {/* Calendar */}
-        <div className="p-4 pb-0">
-          <CalendarDisplay employee={currentEmployee} />
+        {/* Employee Avatar - prominently displayed */}
+        <div className="flex justify-center mb-6">
+          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-gray-200 shadow-lg">
+            <img
+              src={getAvatarUrl()}
+              alt={`${currentEmployee.name}`}
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
         </div>
 
         {/* Announcement */}
-        <div className="p-4 pt-3 text-center">
+        <div className="text-center">
           <h3 className="text-3xl font-bold mb-2 text-gray-800">
             Today, we say goodbye to {currentEmployee.name}
           </h3>
 
-          <p className="text-gray-600 text-lg mb-8">
+          <p className="text-gray-600 text-lg mb-6">
             There are {remainingDays} days left in the layoff advent calendar.
             Next layoff drops tomorrow.
           </p>
+
+          {/* Social Media Sharing */}
+          <div className="flex justify-center space-x-4 mb-6">
+            <div className="share-button-container">
+              <FacebookShareButton url={shareUrl} quote={shareTitle}>
+                <FacebookIcon size={40} round />
+              </FacebookShareButton>
+              <span className="text-xs text-gray-500 mt-1 block">Facebook</span>
+            </div>
+
+            <div className="share-button-container">
+              <TwitterShareButton url={shareUrl} title={shareTitle}>
+                <TwitterIcon size={40} round />
+              </TwitterShareButton>
+              <span className="text-xs text-gray-500 mt-1 block">Twitter</span>
+            </div>
+
+            <div className="share-button-container">
+              <LinkedinShareButton url={shareUrl} title={shareTitle} summary={shareDescription}>
+                <LinkedinIcon size={40} round />
+              </LinkedinShareButton>
+              <span className="text-xs text-gray-500 mt-1 block">LinkedIn</span>
+            </div>
+          </div>
 
           {/* Action buttons */}
           <div className="space-y-4">
@@ -63,35 +118,6 @@ const LayoffModal: React.FC = () => {
             </button>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-// Smaller calendar display for the modal
-const CalendarDisplay: React.FC<{ employee: Employee }> = ({ employee }) => {
-  return (
-    <div className="border border-gray-200 rounded-lg p-2 bg-gray-50">
-      <div className="grid grid-cols-7 text-xs font-medium mb-1 text-gray-500">
-        <div>S</div>
-        <div>M</div>
-        <div>T</div>
-        <div>W</div>
-        <div>T</div>
-        <div>F</div>
-        <div>S</div>
-      </div>
-      <div className="grid grid-cols-7 gap-1">
-        {/* Just a simplified display showing the current day */}
-        {[...Array(7)].map((_, i) => (
-          <div
-            key={`mini-day-${i+1}`}
-            className={`w-6 h-6 flex items-center justify-center rounded-full
-              ${i+1 === employee.id ? 'bubble-red' : ''}`}
-          >
-            {i+1 === employee.id ? employee.id : ''}
-          </div>
-        ))}
       </div>
     </div>
   );

@@ -27,34 +27,30 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
   colorClass,
   onClick
 }) => {
+  // For days 1-3, always show faces regardless of revealed state
+  const showFace = day <= 3;
+  const dayContent = showFace ? (
+    // Days 1-3 show specific employee photos
+    <div className="w-full h-full overflow-hidden rounded-full">
+      <div
+        className="w-full h-full bg-cover bg-center rounded-full"
+        style={{
+          backgroundImage: `url(${getEmployeePhoto(day)})`,
+          backgroundPosition: 'center 20%'
+        }}
+      />
+    </div>
+  ) : (
+    // Other days show the day number in the colorful bubble
+    <span className="text-lg font-bold">{day}</span>
+  );
+
   return (
     <div
       onClick={onClick}
       className={`bubble ${colorClass} flex items-center justify-center cursor-pointer ${isRevealed ? 'revealed' : ''}`}
     >
-      {isRevealed ? (
-        day <= 3 ? (
-          // Days 1-3 show specific employee photos
-          <div
-            className="w-full h-full overflow-hidden rounded-full"
-          >
-            {/* We'll manually add these images to public/faces/ */}
-            <div
-              className="w-full h-full bg-cover bg-center rounded-full"
-              style={{
-                backgroundImage: `url(${getEmployeePhoto(day)})`,
-                backgroundPosition: 'center 20%'
-              }}
-            />
-          </div>
-        ) : (
-          // Other revealed days just show the day number in the colorful bubble
-          <span className="text-lg font-bold">{day}</span>
-        )
-      ) : (
-        // For unrevealed days, show the day number
-        <span className="text-lg font-bold">{day}</span>
-      )}
+      {dayContent}
     </div>
   );
 };

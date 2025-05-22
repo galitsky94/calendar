@@ -10,6 +10,7 @@
 - [x] Create modal component for layoff announcements
 - [x] Implement "Bid on PTO" button
 - [x] Implement "Sign goodbye letter" button
+- [x] Show individual faces in calendar cells (days 1-3)
 
 ## Data & State Management
 - [x] Create employee data structure
@@ -22,10 +23,13 @@
 - [x] Implement color scheme (green header, pastel calendar bubbles)
 - [x] Style modal popup
 - [x] Add responsive design
-- [ ] Add animations for day selection
+- [x] Match styling to reference screenshots
+- [x] Add animations for day selection
 
 ## Final Touches
 - [x] Add sample employee images
 - [x] Polish UI
 - [x] Add instructions for use
-- [ ] Final testing
+- [x] Update team listing with proper styling
+- [x] Deploy application to Netlify
+- [x] Final testing

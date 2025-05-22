@@ -28,8 +28,8 @@ body {
 }
 
 .bubble {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -41,6 +41,21 @@ body {
 .bubble:hover {
   transform: scale(1.05);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bubble:active {
+  transform: scale(0.95);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.bubble.revealed {
+  animation: pulse 0.6s ease-in-out;
+  box-shadow: 0 0 0 4px rgba(30, 185, 128, 0.2);
 }
 
 .bubble-red {
@@ -98,6 +113,13 @@ body {
   background-color: var(--card-bg);
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 90%;
+  max-width: 450px;
+  width: 95%;
+}
+
+/* Specific styles for the modal calendar view */
+.modal-content .bubble {
+  width: 40px;
+  height: 40px;
+  font-size: 0.9rem;
 }

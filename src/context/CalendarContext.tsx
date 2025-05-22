@@ -1,6 +1,7 @@
 import type React from 'react';
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import { type Employee, employees } from '../data/employees';
+import confetti from 'canvas-confetti';
 
 interface CalendarContextType {
   currentDate: number;
@@ -12,6 +13,8 @@ interface CalendarContextType {
   setOpenModal: (open: boolean) => void;
   bidOnPTO: () => void;
   signGoodbyeLetter: () => void;
+  ptoClaims: Record<string, number>;
+  leaderboard: { name: string; ptoClaimed: number }[];
 }
 
 const CalendarContext = createContext<CalendarContextType | undefined>(undefined);
@@ -28,11 +31,47 @@ interface CalendarProviderProps {
   children: ReactNode;
 }
 
+// Function to trigger confetti
+const triggerConfetti = () => {
+  const duration = 2000;
+  const colors = ['#ffcdd2', '#c8e6c9', '#fff9c4', '#bbdefb'];
+
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: colors,
+    disableForReducedMotion: true
+  });
+
+  // Fire a second burst for dramatic effect
+  setTimeout(() => {
+    confetti({
+      particleCount: 50,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: colors
+    });
+  }, 250);
+
+  setTimeout(() => {
+    confetti({
+      particleCount: 50,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: colors
+    });
+  }, 400);
+};
+
 export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) => {
   const [currentDate, setCurrentDate] = useState<number>(3); // Day 3 is already revealed
   const [revealedDays, setRevealedDays] = useState<number[]>([1, 2, 3]); // Days 1-3 already revealed
   const [showModal, setShowModal] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [ptoClaims, setPtoClaims] = useState<Record<string, number>>({});
 
   const revealDay = (day: number) => {
     if (day <= currentDate + 1) {
@@ -40,6 +79,7 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) 
         setRevealedDays([...revealedDays, day]);
         setCurrentDate(day);
         setOpenModal(true);
+        triggerConfetti(); // Trigger confetti when a new day is revealed
       } else {
         // If day is already revealed, just show the modal for that employee
         setCurrentDate(day);
@@ -52,11 +92,29 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) 
   const remainingDays = 25 - revealedDays.length;
 
   const bidOnPTO = () => {
-    // Simulate bidding on PTO
-    console.log('Bidding on PTO of', currentEmployee?.name);
-    setTimeout(() => {
-      setOpenModal(false);
-    }, 1000);
+    if (currentEmployee) {
+      // Update PTO claims for the current user
+      const userName = 'Current User'; // In a real app, this would be the logged-in user
+      const currentPto = ptoClaims[userName] || 0;
+      const newPtoClaims = {
+        ...ptoClaims,
+        [userName]: currentPto + currentEmployee.pto
+      };
+
+      setPtoClaims(newPtoClaims);
+
+      // Simulate bidding on PTO with a confetti burst
+      confetti({
+        particleCount: 40,
+        spread: 50,
+        origin: { y: 0.7 },
+        colors: ['#1eb980'],
+      });
+
+      setTimeout(() => {
+        setOpenModal(false);
+      }, 1000);
+    }
   };
 
   const signGoodbyeLetter = () => {
@@ -66,6 +124,11 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) 
       setOpenModal(false);
     }, 1000);
   };
+
+  // Generate leaderboard sorted by PTO claimed
+  const leaderboard = Object.entries(ptoClaims)
+    .map(([name, ptoClaimed]) => ({ name, ptoClaimed }))
+    .sort((a, b) => b.ptoClaimed - a.ptoClaimed);
 
   return (
     <CalendarContext.Provider
@@ -78,7 +141,9 @@ export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) 
         revealDay,
         setOpenModal,
         bidOnPTO,
-        signGoodbyeLetter
+        signGoodbyeLetter,
+        ptoClaims,
+        leaderboard
       }}
     >
       {children}

@@ -35,19 +35,16 @@ const CalendarGrid: React.FC = () => {
   const { revealedDays, revealDay } = useCalendar();
 
   return (
-    <div className="p-6 card mb-6">
-      {/* Days of week header */}
-      <div className="grid grid-cols-7 mb-4">
-        {daysOfWeek.map((day) => (
-          <div key={`day-${day}`} className="text-center font-semibold text-gray-500">
+    <div className="p-8 card mb-6 rounded-xl shadow bg-white">
+      <div className="grid grid-cols-7 mb-6">
+        {daysOfWeek.map((day, index) => (
+          <div key={`grid-day-${day}-${index}`} className="text-center font-semibold text-gray-500">
             {day}
           </div>
         ))}
       </div>
 
-      {/* Calendar days */}
-      <div className="grid grid-cols-7 gap-3">
-        {/* First row: Days 1-7 */}
+      <div className="grid grid-cols-7 gap-4">
         {[...Array(7)].map((_, index) => {
           const day = index + 1;
           const isRevealed = revealedDays.includes(day);
@@ -66,7 +63,6 @@ const CalendarGrid: React.FC = () => {
           );
         })}
 
-        {/* Second row: Days 8-14 */}
         {[...Array(7)].map((_, index) => {
           const day = index + 8;
           const isRevealed = revealedDays.includes(day);
@@ -85,7 +81,6 @@ const CalendarGrid: React.FC = () => {
           );
         })}
 
-        {/* Third row: Days 15-21 */}
         {[...Array(7)].map((_, index) => {
           const day = index + 15;
           const isRevealed = revealedDays.includes(day);
@@ -104,10 +99,8 @@ const CalendarGrid: React.FC = () => {
           );
         })}
 
-        {/* Fourth row: Days 22-25 (and empty cells) */}
         {[...Array(7)].map((_, index) => {
           if (index > 3) return <div key={`empty-position-${index}`} />;
-
           const day = index + 22;
           const isRevealed = revealedDays.includes(day);
           const employee = employees.find(emp => emp.id === day);
