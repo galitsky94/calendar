@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #e8f5ff; /* Light sky blue background */
+  --card-bg: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+  --header-bg: #82b1ff; /* Soft celestial blue */
+  --text-primary: #34407d; /* Soft navy */
+  --text-secondary: #838caf; /* Muted blue-gray */
+  --accent-green: #82b1ff; /* Celestial blue accent replacing green */
+  --bubble-red: #ffd6e0; /* Softer, heavenly pink */
+  --bubble-green: #d4f5e9; /* Ethereal mint */
+  --bubble-yellow: #fff5d6; /* Soft golden glow */
+  --bubble-blue: #d6ecff; /* Light sky blue */
+}
+
+/* Custom styles */
+body {
+  background-color: var(--background);
+  background-image: linear-gradient(to bottom, #e8f5ff, #f0f8ff);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(130, 177, 255, 0.2); /* Soft blue shadow */
+  backdrop-filter: blur(5px);
+}
+
+.bubble {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.bubble:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(130, 177, 255, 0.15);
+}
+
+.bubble:active {
+  transform: scale(0.95);
+}
+
+.bubble.revealed {
+  animation: pulse 0.6s ease-in-out;
+  box-shadow: 0 0 0 4px rgba(130, 177, 255, 0.3); /* Celestial blue glow */
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.bubble-red {
+  background-color: var(--bubble-red);
+  color: #d14d72; /* Softer pink text */
+}
+
+.bubble-green {
+  background-color: var(--bubble-green);
+  color: #3aa394; /* Soft teal text */
+}
+
+.bubble-yellow {
+  background-color: var(--bubble-yellow);
+  color: #e0a800; /* Golden text */
+}
+
+.bubble-blue {
+  background-color: var(--bubble-blue);
+  color: #4d8fe0; /* Celestial blue text */
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-blue-400 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-sm;
+}
+
+.btn-secondary {
+  @apply bg-blue-200 hover:bg-blue-300 text-blue-700 font-semibold py-3 px-6 rounded-lg transition-colors shadow-sm;
+}
+
+/* Animation for glow pulse */
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 5px 0 rgba(255, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 5px 0 rgba(255, 0, 0, 0.3);
+  }
+}
+
+/* Animation for pulsating bubble */
+@keyframes pulsate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Animation for subtle red pulse */
+@keyframes subtle-red-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0px 0px rgba(255, 0, 0, 0);
+  }
+  50% {
+    transform: scale(1.07);
+    box-shadow: 0 0 15px 4px rgba(255, 0, 0, 0.4);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0px 0px rgba(255, 0, 0, 0);
+  }
+}
+
+/* Animation for gradient background */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient-shift 10s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* Animation for coin flip */
+@keyframes flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+
+.animate-flip {
+  animation: flip 0.15s ease;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* === DAY 4 ANIMATIONS AND STYLES === */
+.day4-pulsate {
+  animation: subtle-red-pulse 2s infinite ease-in-out;
+  position: relative; /* For correct box-shadow display and z-index if needed */
+  z-index: 2; /* To be above other elements if necessary */
+}
+
+/* Add fadeIn animation for face reveals */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.wednesday-bubble {
+  position: relative;
+  animation: glow-pulse 2s infinite;
+  animation-delay: 2.5s;
+}
+
+/* Animations for Day 4 sequential reveal */
+@keyframes dissolve-question-effect {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Styles for the appearing face for Day 4 */
+.face-appearing {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  animation: reveal-face-effect 1.5s forwards;
+}
+
+@keyframes reveal-face-effect {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(180deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Styles for the dissolving question mark */
+.question-dissolving {
+  animation: dissolve-question-effect 1.5s ease-in-out forwards;
+}
+
+/* Optimization for the third face image */
+.face3-optimized {
+  background-color: #f0f0f0; /* Light background while loading */
+  will-change: background-image; /* Hint to browser about upcoming change */
+}
+
+/* Add a small loading state indicator */
+@keyframes face3-loading {
+  0% { opacity: 0.8; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0.8; }
+}
+
+.face3-loading {
+  animation: face3-loading 1s ease-in-out infinite;
+}
