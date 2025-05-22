@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #e8f5ff; /* Light sky blue background */
+  --card-bg: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+  --header-bg: #82b1ff; /* Soft celestial blue */
+  --text-primary: #34407d; /* Soft navy */
+  --text-secondary: #838caf; /* Muted blue-gray */
+  --accent-green: #82b1ff; /* Celestial blue accent replacing green */
+  --bubble-red: #ffd6e0; /* Softer, heavenly pink */
+  --bubble-green: #d4f5e9; /* Ethereal mint */
+  --bubble-yellow: #fff5d6; /* Soft golden glow */
+  --bubble-blue: #d6ecff; /* Light sky blue */
+}
+
+body {
+  background-color: var(--background);
+  background-image: linear-gradient(to bottom, #e8f5ff, #f0f8ff);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(130, 177, 255, 0.2); /* Soft blue shadow */
+  backdrop-filter: blur(5px);
+}
+
+.bubble {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.bubble:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(130, 177, 255, 0.15);
+}
+
+.bubble:active {
+  transform: scale(0.95);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.bubble.revealed {
+  animation: pulse 0.6s ease-in-out;
+  box-shadow: 0 0 0 4px rgba(130, 177, 255, 0.3); /* Celestial blue glow */
+}
+
+/* Новая анимация пульсации для 4-го дня */
+@keyframes subtle-red-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px 3px rgba(255, 130, 130, 0.25); /* Начальное состояние чуть заметнее */
+  }
+  50% {
+    transform: scale(1.08); /* Увеличенный масштаб */
+    box-shadow: 0 0 18px 6px rgba(255, 100, 100, 0.45); /* Более интенсивная и широкая тень */
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px 3px rgba(255, 130, 130, 0.25);
+  }
+}
+
+.day4-pulsate {
+  animation: subtle-red-pulse 2s infinite ease-in-out;
+  position: relative; /* Для корректного отображения box-shadow и z-index если понадобится */
+  z-index: 2; /* Чтобы быть поверх других элементов, если необходимо */
+}
+
+@keyframes glow-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 205, 210, 0.4); }
+  70% { box-shadow: 0 0 0 5px rgba(255, 205, 210, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 205, 210, 0); }
+}
+
+/* Add fadeIn animation for face reveals */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+.wednesday-bubble {
+  position: relative;
+  animation: glow-pulse 2s infinite;
+  animation-delay: 2.5s;
+}
+
+/* New animations for Day 4 sequential reveal */
+@keyframes dissolve-question-effect {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* Styles for the appearing face for Day 4 */
+.face-appearing {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  animation: reveal-face-effect 1.5s forwards;
+}
+
+@keyframes reveal-face-effect {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(180deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Styles for the dissolving question mark */
+.question-dissolving {
+  animation: dissolve-question-effect 1.5s ease-in-out forwards;
+}
+
+.bubble-red {
+  background-color: var(--bubble-red);
+  color: #d14d72; /* Softer pink text */
+}
+
+.bubble-green {
+  background-color: var(--bubble-green);
+  color: #3aa394; /* Soft teal text */
+}
+
+.bubble-yellow {
+  background-color: var(--bubble-yellow);
+  color: #e0a800; /* Golden text */
+}
+
+.bubble-blue {
+  background-color: var(--bubble-blue);
+  color: #4d8fe0; /* Celestial blue text */
+}
+
+.btn-primary {
+  background-color: var(--accent-green);
+  color: white;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #5d9cff; /* Slightly darker blue */
+}
+
+.btn-secondary {
+  background-color: #e5eeff; /* Light blue background */
+  color: #5d76b5; /* Softer blue text */
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #d1e1ff; /* Slightly darker blue */
+}
+
+.modal-overlay {
+  background-color: rgba(130, 177, 255, 0.3);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(230, 240, 255, 0.9));
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(130, 177, 255, 0.25);
+  max-width: 450px;
+  width: 95%;
+}
+
+/* Add animation for the gradient border */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  animation: gradient-shift 8s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* Specific styles for the modal calendar view */
+.modal-content .bubble {
+  width: 56px;
+  height: 56px;
+  font-size: 1.1rem;
+}
+
+/* Optimization for the third face image */
+.face3-optimized {
+  background-color: #f0f0f0; /* Light background while loading */
+  will-change: background-image; /* Hint to browser about upcoming change */
+}
+
+/* Add a small loading state indicator */
+@keyframes face3-loading {
+  0% { opacity: 0.8; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0.8; }
+}
+
+.face3-loading {
+  animation: face3-loading 1s ease-in-out infinite;
+}
