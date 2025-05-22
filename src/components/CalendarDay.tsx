@@ -18,6 +18,12 @@ interface CalendarDayProps {
   onClick: () => void;
 }
 
+// Map calendar days 1-25 to actual dates (30, 1-24)
+const getCalendarDate = (day: number): number => {
+  if (day === 1) return 30; // First day is Nov 30
+  return day - 1; // Rest are Dec 1-24
+};
+
 const CalendarDay: React.FC<CalendarDayProps> = ({
   day,
   isRevealed,
@@ -68,44 +74,50 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
     // Only apply animation if the day is revealed
     if (!isRevealed) {
       return (
-        <div
-          onClick={onClick}
-          className={`bubble ${colorClass} flex items-center justify-center cursor-pointer`}
-        >
-          <span className="text-2xl font-bold">?</span>
+        <div className="flex flex-col items-center">
+          <div
+            onClick={onClick}
+            className={`bubble ${colorClass} flex items-center justify-center cursor-pointer`}
+          >
+            <span className="text-2xl font-bold">?</span>
+          </div>
+          <div className="text-xs text-gray-500 mt-1">{getCalendarDate(day)}</div>
         </div>
       );
     }
 
     return (
-      <div
-        onClick={onClick}
-        className={`bubble ${colorClass} flex items-center justify-center cursor-pointer relative overflow-hidden ${isRevealed && wednesdayImageLoaded ? 'day4-pulsate' : ''}`}
-      >
-        {showQuestion && (
-          <div
-            className={`absolute inset-0 flex items-center justify-center text-2xl font-bold ${dissolveQuestion ? 'question-dissolving' : ''}`}
-            style={{ opacity: dissolveQuestion ? 0 : 1 }}
-          >
-            ?
-          </div>
-        )}
-        {showFace && wednesdayImageLoaded && (
-          <div
-            className="face-appearing"
-            style={{ backgroundImage: `url(${getEmployeePhoto(4)})` }}
-          />
-        )}
-        {/* Fallback if somehow no image/question for revealed Wednesday - should not happen */}
-        {!showQuestion && !showFace && wednesdayImageLoaded && (
+      <div className="flex flex-col items-center">
+        <div
+          onClick={onClick}
+          className={`bubble ${colorClass} flex items-center justify-center cursor-pointer relative overflow-hidden ${isRevealed && wednesdayImageLoaded ? 'day4-pulsate' : ''}`}
+        >
+          {showQuestion && (
             <div
-                className="w-full h-full bg-cover bg-center rounded-full"
-                style={{ backgroundImage: `url(${getEmployeePhoto(4)})` }}
+              className={`absolute inset-0 flex items-center justify-center text-2xl font-bold ${dissolveQuestion ? 'question-dissolving' : ''}`}
+              style={{ opacity: dissolveQuestion ? 0 : 1 }}
+            >
+              ?
+            </div>
+          )}
+          {showFace && wednesdayImageLoaded && (
+            <div
+              className="face-appearing"
+              style={{ backgroundImage: `url(${getEmployeePhoto(4)})` }}
             />
-        )}
-        {!showQuestion && !showFace && !wednesdayImageLoaded && isRevealed && (
-            <span className="text-4xl font-bold">?</span>
-        )}
+          )}
+          {/* Fallback if somehow no image/question for revealed Wednesday - should not happen */}
+          {!showQuestion && !showFace && wednesdayImageLoaded && (
+              <div
+                  className="w-full h-full bg-cover bg-center rounded-full"
+                  style={{ backgroundImage: `url(${getEmployeePhoto(4)})` }}
+              />
+          )}
+          {!showQuestion && !showFace && !wednesdayImageLoaded && isRevealed && (
+              <span className="text-4xl font-bold">?</span>
+          )}
+        </div>
+        <div className="text-xs text-gray-500 mt-1">{getCalendarDate(day)}</div>
       </div>
     );
   }
@@ -141,11 +153,14 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
   );
 
   return (
-    <div
-      onClick={onClick}
-      className={`bubble ${colorClass} flex items-center justify-center cursor-pointer ${isRevealed && !isWednesday ? 'revealed' : ''}`}
-    >
-      {normalContent}
+    <div className="flex flex-col items-center">
+      <div
+        onClick={onClick}
+        className={`bubble ${colorClass} flex items-center justify-center cursor-pointer ${isRevealed && !isWednesday ? 'revealed' : ''}`}
+      >
+        {normalContent}
+      </div>
+      <div className="text-xs text-gray-500 mt-1">{getCalendarDate(day)}</div>
     </div>
   );
 };

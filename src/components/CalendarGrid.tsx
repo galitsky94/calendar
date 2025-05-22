@@ -48,7 +48,7 @@ const CalendarGrid: React.FC = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-5 place-items-center">
+        <div className="grid grid-cols-7 gap-x-5 gap-y-6 place-items-center">
           {[...Array(7)].map((_, index) => {
             const day = index + 1;
             const isRevealed = revealedDays.includes(day);
