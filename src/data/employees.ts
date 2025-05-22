@@ -11,29 +11,29 @@ export interface Employee {
 export const employees: Employee[] = [
   {
     id: 1,
-    name: "John Smith",
+    name: "Valentina Sparks",
     position: "Senior Developer",
     department: "Engineering",
     yearsOfService: 5,
-    photoUrl: "/john.png",
+    photoUrl: "/faces/face1.jpg",
     pto: 15
   },
   {
     id: 2,
-    name: "Angela Davis",
+    name: "Jasper Kick",
     position: "Marketing Manager",
     department: "Marketing",
     yearsOfService: 3,
-    photoUrl: "/angela.png",
+    photoUrl: "/faces/face2.jpg",
     pto: 12
   },
   {
     id: 3,
-    name: "Carlos Rodriguez",
+    name: "Ruby Verve",
     position: "UX Designer",
     department: "Design",
     yearsOfService: 2,
-    photoUrl: "/carlos.png",
+    photoUrl: "/faces/face3.jpg",
     pto: 8
   },
   {

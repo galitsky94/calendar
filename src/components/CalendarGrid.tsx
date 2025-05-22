@@ -35,88 +35,93 @@ const CalendarGrid: React.FC = () => {
   const { revealedDays, revealDay } = useCalendar();
 
   return (
-    <div className="p-8 card mb-6 rounded-xl shadow bg-white">
-      <div className="grid grid-cols-7 mb-6">
-        {daysOfWeek.map((day, index) => (
-          <div key={`grid-day-${day}-${index}`} className="text-center font-semibold text-gray-500">
-            {day}
-          </div>
-        ))}
-      </div>
+    <div>
+      <h2 className="text-3xl font-bold text-[#1eb980] mb-8 text-center">
+        ADVENT LAYOFF CALENDAR
+      </h2>
+      <div className="p-10 card mb-8 rounded-xl shadow bg-white max-w-4xl mx-auto">
+        <div className="grid grid-cols-7 mb-8">
+          {daysOfWeek.map((day, index) => (
+            <div key={`grid-day-${day}-${index}`} className="text-center font-semibold text-gray-500 text-xl">
+              {day}
+            </div>
+          ))}
+        </div>
 
-      <div className="grid grid-cols-7 gap-4">
-        {[...Array(7)].map((_, index) => {
-          const day = index + 1;
-          const isRevealed = revealedDays.includes(day);
-          const employee = employees.find(emp => emp.id === day);
-          const colorClass = colorClasses[day] || 'bg-gray-100 text-gray-700';
+        <div className="grid grid-cols-7 gap-5">
+          {[...Array(7)].map((_, index) => {
+            const day = index + 1;
+            const isRevealed = revealedDays.includes(day);
+            const employee = employees.find(emp => emp.id === day);
+            const colorClass = colorClasses[day] || 'bg-gray-100 text-gray-700';
 
-          return (
-            <CalendarDay
-              key={day}
-              day={day}
-              isRevealed={isRevealed}
-              employee={employee}
-              colorClass={colorClass}
-              onClick={() => revealDay(day)}
-            />
-          );
-        })}
+            return (
+              <CalendarDay
+                key={day}
+                day={day}
+                isRevealed={isRevealed}
+                employee={employee}
+                colorClass={colorClass}
+                onClick={() => revealDay(day)}
+              />
+            );
+          })}
 
-        {[...Array(7)].map((_, index) => {
-          const day = index + 8;
-          const isRevealed = revealedDays.includes(day);
-          const employee = employees.find(emp => emp.id === day);
-          const colorClass = colorClasses[day] || 'bg-gray-100 text-gray-700';
+          {[...Array(7)].map((_, index) => {
+            const day = index + 8;
+            const isRevealed = revealedDays.includes(day);
+            const employee = employees.find(emp => emp.id === day);
+            const colorClass = colorClasses[day] || 'bg-gray-100 text-gray-700';
 
-          return (
-            <CalendarDay
-              key={day}
-              day={day}
-              isRevealed={isRevealed}
-              employee={employee}
-              colorClass={colorClass}
-              onClick={() => revealDay(day)}
-            />
-          );
-        })}
+            return (
+              <CalendarDay
+                key={day}
+                day={day}
+                isRevealed={isRevealed}
+                employee={employee}
+                colorClass={colorClass}
+                onClick={() => revealDay(day)}
+              />
+            );
+          })}
 
-        {[...Array(7)].map((_, index) => {
-          const day = index + 15;
-          const isRevealed = revealedDays.includes(day);
-          const employee = employees.find(emp => emp.id === day);
-          const colorClass = colorClasses[day] || 'bg-gray-100 text-gray-700';
+          {[...Array(7)].map((_, index) => {
+            const day = index + 15;
+            const isRevealed = revealedDays.includes(day);
+            const employee = employees.find(emp => emp.id === day);
+            const colorClass = colorClasses[day] || 'bg-gray-100 text-gray-700';
 
-          return (
-            <CalendarDay
-              key={day}
-              day={day}
-              isRevealed={isRevealed}
-              employee={employee}
-              colorClass={colorClass}
-              onClick={() => revealDay(day)}
-            />
-          );
-        })}
+            return (
+              <CalendarDay
+                key={day}
+                day={day}
+                isRevealed={isRevealed}
+                employee={employee}
+                colorClass={colorClass}
+                onClick={() => revealDay(day)}
+              />
+            );
+          })}
 
-        {[...Array(7)].map((_, index) => {
-          if (index > 3) return <div key={`empty-position-${index}`} />;
-          const day = index + 22;
-          const isRevealed = revealedDays.includes(day);
-          const employee = employees.find(emp => emp.id === day);
-          const colorClass = colorClasses[day] || 'bg-gray-100 text-gray-700';
+          {[...Array(7)].map((_, index) => {
+            if (index > 3) return <div key={`empty-position-${index}`} />;
+            const day = index + 22;
+            const isRevealed = revealedDays.includes(day);
+            const employee = employees.find(emp => emp.id === day);
+            const colorClass = colorClasses[day] || 'bg-gray-100 text-gray-700';
 
-          return (
-            <CalendarDay
-              key={day}
-              day={day}
-              isRevealed={isRevealed}
-              employee={employee}
-              colorClass={colorClass}
-              onClick={() => revealDay(day)}
-            />
-          );
-        })}
+            return (
+              <CalendarDay
+                key={day}
+                day={day}
+                isRevealed={isRevealed}
+                employee={employee}
+                colorClass={colorClass}
+                onClick={() => revealDay(day)}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

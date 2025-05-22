@@ -28,13 +28,14 @@ body {
 }
 
 .bubble {
-  width: 56px;
-  height: 56px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  font-size: 1.5rem;
   transition: all 0.2s ease;
 }
 
@@ -119,7 +120,7 @@ body {
 
 /* Specific styles for the modal calendar view */
 .modal-content .bubble {
-  width: 40px;
-  height: 40px;
-  font-size: 0.9rem;
+  width: 56px;
+  height: 56px;
+  font-size: 1.1rem;
 }
