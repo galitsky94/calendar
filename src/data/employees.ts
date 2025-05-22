@@ -38,12 +38,12 @@ export const employees: Employee[] = [
   },
   {
     id: 4,
-    name: "Sarah Johnson",
+    name: "Xavier Dick",
     position: "Product Manager",
     department: "Product",
     yearsOfService: 4,
-    photoUrl: "/sarah.png",
-    pto: 14
+    photoUrl: "/faces/face4.jpg",
+    pto: 18
   },
   {
     id: 5,

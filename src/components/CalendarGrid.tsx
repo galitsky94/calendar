@@ -35,11 +35,11 @@ const CalendarGrid: React.FC = () => {
   const { revealedDays, revealDay } = useCalendar();
 
   return (
-    <div>
+    <div className="w-full flex flex-col items-center">
       <h2 className="text-3xl font-bold text-[#1eb980] mb-8 text-center">
         ADVENT LAYOFF CALENDAR
       </h2>
-      <div className="p-10 card mb-8 rounded-xl shadow bg-white max-w-4xl mx-auto">
+      <div className="p-10 card mb-8 rounded-xl shadow bg-white max-w-3xl mx-auto">
         <div className="grid grid-cols-7 mb-8">
           {daysOfWeek.map((day, index) => (
             <div key={`grid-day-${day}-${index}`} className="text-center font-semibold text-gray-500 text-xl">
@@ -48,7 +48,7 @@ const CalendarGrid: React.FC = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-5">
+        <div className="grid grid-cols-7 gap-5 place-items-center">
           {[...Array(7)].map((_, index) => {
             const day = index + 1;
             const isRevealed = revealedDays.includes(day);

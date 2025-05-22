@@ -67,11 +67,21 @@ const triggerConfetti = () => {
 };
 
 export const CalendarProvider: React.FC<CalendarProviderProps> = ({ children }) => {
-  const [currentDate, setCurrentDate] = useState<number>(3); // Day 3 is already revealed
-  const [revealedDays, setRevealedDays] = useState<number[]>([1, 2, 3]); // Days 1-3 already revealed
+  const [currentDate, setCurrentDate] = useState<number>(4); // Pretend it's day 4 (Wednesday)
+  const [revealedDays, setRevealedDays] = useState<number[]>([1, 2, 3, 4]); // Days 1-4 already revealed
   const [showModal, setShowModal] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [ptoClaims, setPtoClaims] = useState<Record<string, number>>({});
+
+  // Automatically show Wednesday employee in modal after page load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Set this if you want to auto-show the modal for day 4
+      // setOpenModal(true);
+    }, 4000); // Give time for the animation to finish
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const revealDay = (day: number) => {
     if (day <= currentDate + 1) {
